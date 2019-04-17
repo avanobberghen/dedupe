@@ -31,7 +31,7 @@ optp.add_option('-v', '--verbose', dest='verbose', action='count',
                 help='Increase verbosity (specify multiple times for more)'
                 )
 (opts, args) = optp.parse_args()
-log_level = logging.WARNING 
+log_level = logging.WARNING
 if opts.verbose :
     if opts.verbose == 1:
         log_level = logging.INFO
@@ -68,7 +68,7 @@ def preProcess(column):
 
 def readData(filename):
     """
-    Read in our data from a CSV file and create a dictionary of records, 
+    Read in our data from a CSV file and create a dictionary of records,
     where the key is a unique record ID.
     """
 
@@ -84,10 +84,10 @@ def readData(filename):
 
     return data_d
 
-    
+
 print('importing data ...')
-data_1 = readData('AbtBuy_Abt.csv')
-data_2 = readData('AbtBuy_Buy.csv')
+data_1 = readData('TUSS.csv')
+data_2 = readData('ATC.csv')
 
 def descriptions() :
     for dataset in (data_1, data_2) :
@@ -106,13 +106,10 @@ else:
     # Define the fields the linker will pay attention to
     #
     # Notice how we are telling the linker to use a custom field comparator
-    # for the 'price' field. 
+    # for the 'price' field.
     fields = [
-        {'field' : 'title', 'type': 'String'},
-        {'field' : 'title', 'type': 'Text', 'corpus' : descriptions()},
-        {'field' : 'description', 'type': 'Text',
-         'has missing' : True, 'corpus' : descriptions()},
-        {'field' : 'price', 'type' : 'Price', 'has missing' : True}]
+        {'field' : 'CodeLabel', 'type': 'String'},
+        {'field' : 'Ingredients', 'type': 'Text', 'has missing' : True}]
 
     # Create a new linker object and pass our data model to it.
     linker = dedupe.RecordLink(fields)
@@ -168,7 +165,7 @@ print('# duplicate sets', len(linked_records))
 
 # ## Writing Results
 
-# Write our original data back out to a CSV with a new column called 
+# Write our original data back out to a CSV with a new column called
 # 'Cluster ID' which indicates which records refer to each other.
 
 cluster_membership = {}
@@ -181,14 +178,14 @@ if cluster_id :
     unique_id = cluster_id + 1
 else :
     unique_id =0
-    
+
 
 with open(output_file, 'w') as f:
     writer = csv.writer(f)
-    
+
     header_unwritten = True
 
-    for fileno, filename in enumerate(('AbtBuy_Abt.csv', 'AbtBuy_Buy.csv')) :
+    for fileno, filename in enumerate(('TUSS.csv', 'ATC.csv')) :
         with open(filename) as f_input :
             reader = csv.reader(f_input)
 
