@@ -78,8 +78,8 @@ def readData(filename):
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
             clean_row = dict([(k, preProcess(v)) for (k, v) in row.items()])
-            if clean_row['price'] :
-                clean_row['price'] = float(clean_row['price'][1:])
+            #if clean_row['price'] :
+            #    clean_row['price'] = float(clean_row['price'][1:])
             data_d[filename + str(i)] = dict(clean_row)
 
     return data_d
